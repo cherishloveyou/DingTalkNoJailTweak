@@ -19,10 +19,16 @@
 ## JailBreakLoadtweak 目录
 这个tweak是用来在越狱手机上加载build_dylib.sh生成的抢红包的dylib的.编译方式,同第一个.   
  不过要先运行build_dylib.sh生成dylib.这个脚本还做了一件事情,就是将生成的 bin/univesal/libDingTalkNoJailTweak.ydlib拷贝到 JailBreakLoadtweak/layout/Library/Application Support/DingDing/目录下
-对于电脑上安装了theos环境的来说.更改目录下makefile文件中的THEOS_DEVICE_IP = 10.0.45.93为你自己的手机的ip.  
-然后执行命令 make package install,就可以将其安装到越狱的手机上.一旦安装了,打开钉钉,会出现一个菜单  
+
+对于电脑上安装了theos环境的来说.更改目录下makefile文件中的THEOS_DEVICE_IP = 192.168.1.100为你自己的手机的ip.  (手机和电脑需要在同一WiFi下)                                                                                                                  ARCHS = armv7 arm64                                                                                          VALID_ARCHS = armv7 armvs7 arm64                                                               TARGET = iphone:latest:8.0
+
+然后执行命令 make package install,就可以将其安装到越狱的手机上。
+
+> 越狱手机需要安装openSSH，iOS8以上请安装iOS Terminal，命令sudo root 默认密码alpine 如果忘记root密码，可以用iFile修改root密码文件存放地方：/etc/master.passwd。用iFile的文本编辑功能打开master.passwd，你会找到类似这样的一行字符——root:UlD3amElwHEpc:0:0::0:0:System，红色字符就是加密过的密码，把它更替为ab3z4hnHA5WdU，这是对应的密码就是abc123，然后重启，修改root密码passwd root修改mobile的密码 passwd mobile
+
+.一旦安装了,打开钉钉,会出现一个菜单  
 ![](image/IMG_5282.jpg)   
- 
+
 
 点击菜单,就出现了自动抢红包的控制开关了  
 ![](image/IMG_5498.PNG)   
@@ -57,9 +63,9 @@ optool install -c load -p "@executable_path/libDingTalkNoJailTweak.dylib" -t Din
 
  （记得 `@executable_path` 不能缺少,也不要改成其他的.）
  > 注意你执行这句命令所在的目录,要根据你所在的目录来调整这句命令中的最后的DingTalk.app/DingTalk,如果你所在的当前执行optool命令是在DingTalk.app这个目录下,那么命令就应该调整为  optool install -c load -p "@executable_path/libDingTalkNoJailTweak.dylib" -t DingTalk了,总之这个命令最后是让你定位到我们要修改的DingTalk这个可执行文件,当然了,你完全可以写绝对目录
- 
+
  > 当然,你执行完这句命令后,希望检测一下有没有错,这个时候,可以在DingTalk.app目录下,执行 `otool -L DingTalk` 来查看可执行文件加载的所有的dylib,如果能够看到其输出了@executable_path/libDingTalkNoJailTweak.dylib (compatibility version 0.0.0, current version 0.0.0),就说明没问题了
- 
+
 6、使用企业版账号随便archive一个应用,将其中的embedded.mobileprovision文件拷贝出来,放到钉钉文件夹下,和DingTalk同级目录,一定要记得 需要这个 `embedded.mobileprovision` 文件,如果没有这个文件,重签名后是安装不了的
 
 7、重签名 这一步可以使用图形化工具 [ios-app-signer源码](https://github.com/DanTheMan827/ios-app-signer)   [ios-app-signer下载](http://dantheman827.github.io/ios-app-signer/)  得到新的ipa安装包
